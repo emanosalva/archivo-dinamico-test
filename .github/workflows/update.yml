@@ -2,7 +2,7 @@ name: Actualizar reporte automáticamente
 
 on:
   schedule:
-    - cron: "*/2 * * * *"   # Cada 2 minutos
+    - cron: "*/1 * * * *"   # Cada 1 minutos
   workflow_dispatch:        # Permite ejecutarlo manualmente
 
 jobs:
