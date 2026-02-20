@@ -1,0 +1,28 @@
+name: Actualizar reporte automáticamente
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"   # Cada 5 minutos
+  workflow_dispatch:        # Permite ejecutarlo manualmente
+
+jobs:
+  update-file:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Actualizar contenido del archivo
+        run: |
+          echo "Reporte dinámico" > reporte.txt
+          echo "Generado en: $(date)" >> reporte.txt
+          echo "Run ID: $GITHUB_RUN_ID" >> reporte.txt
+
+      - name: Commit y push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add reporte.txt
+          git commit -m "Actualización automática"
+          git push
