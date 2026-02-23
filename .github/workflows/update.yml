@@ -1,9 +1,9 @@
 name: Actualizar reporte automáticamente
 
 on:
+  schedule:
+    - cron: "*/5 * * * *"
   workflow_dispatch:
-  repository_dispatch:
-    types: [update-report]
 
 jobs:
   update-file:
@@ -17,16 +17,22 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - run: |
+      - name: Actualizar contenido del archivo
+        run: |
           echo "Reporte dinámico" > reporte.txt
           echo "Generado en: $(date +%s)" >> reporte.txt
           echo "Run ID: $RANDOM" >> reporte.txt
 
-      - run: |
+      - name: Commit y push
+        run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
+
           git add reporte.txt
           git commit -m "Actualización automática" || exit 0
-          git push
+          git push origin main
