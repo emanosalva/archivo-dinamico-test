@@ -22,9 +22,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Sincronizar con remoto
-        run: git pull --rebase origin main
-
       - name: Actualizar contenido del archivo
         run: |
           echo "Reporte dinámico" > reporte.txt
