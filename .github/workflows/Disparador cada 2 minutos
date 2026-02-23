@@ -1,0 +1,17 @@
+name: Disparador cada 2 minutos
+
+on:
+  schedule:
+    - cron: "*/2 * * * *"
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Disparar workflow principal
+        run: |
+          curl -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          https://api.github.com/repos/${{ github.repository }}/dispatches \
+          -d '{"event_type":"update-report"}'
