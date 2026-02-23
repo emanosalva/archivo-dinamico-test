@@ -2,24 +2,28 @@ name: Actualizar reporte automáticamente
 
 on:
   schedule:
-    - cron: "*/3 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 jobs:
   update-file:
     runs-on: ubuntu-latest
+
     concurrency:
       group: actualizar-reporte
       cancel-in-progress: true
 
     permissions:
-      contents: write   # 👈 ESTA LÍNEA ES LA CLAVE
+      contents: write
 
     steps:
       - name: Clonar repositorio
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Sincronizar con remoto
+        run: git pull --rebase origin main
 
       - name: Actualizar contenido del archivo
         run: |
@@ -31,11 +35,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-      
-          git pull --rebase origin main
-      
+
           git add reporte.txt
           git commit -m "Actualización automática" || exit 0
           git push origin main
-      
-
