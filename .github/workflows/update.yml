@@ -8,6 +8,9 @@ on:
 jobs:
   update-file:
     runs-on: ubuntu-latest
+    concurrency:
+      group: actualizar-reporte
+      cancel-in-progress: true
 
     permissions:
       contents: write   # 👈 ESTA LÍNEA ES LA CLAVE
